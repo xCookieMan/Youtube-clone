@@ -9,11 +9,19 @@ export default defineConfig([
   {
     files: ['client/**/*.{js,jsx}'],
     extends: [js.configs.recommended, reactHooks.configs.flat.recommended, reactRefresh.configs.vite],
-    languageOptions: { globals: globals.browser, parserOptions: { ecmaFeatures: { jsx: true } } }
+    languageOptions: { globals: globals.browser, parserOptions: { ecmaFeatures: { jsx: true } } },
+    rules: {
+      'no-unused-vars': ['warn', { args: 'none', varsIgnorePattern: '^React$' }],
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-refresh/only-export-components': 'warn',
+    }
   },
   {
     files: ['server/**/*.js'],
     extends: [js.configs.recommended],
-    languageOptions: { globals: globals.node, parserOptions: { sourceType: 'module' } }
+    languageOptions: { globals: globals.node, parserOptions: { sourceType: 'module' } },
+    rules: {
+      'no-unused-vars': ['warn', { args: 'none' }],
+    }
   }
 ])

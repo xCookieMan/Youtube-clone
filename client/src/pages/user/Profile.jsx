@@ -14,6 +14,7 @@ import {
 import LoadingSkeleton from "../../components/ui/LoadingSkeleton";
 import VideoCard from "../../components/cards/VideoCard";
 import ShortsCard from "../../components/cards/ShortsCard";
+import { deleteChannel } from "../../lib/api";
 
 /* ================= LOCAL AUTH HEADER (since api.js handles auth internally) ================= */
 const getAuthHeaderLocal = () => {

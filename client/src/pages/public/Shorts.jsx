@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { fetchShorts } from "../../lib/api";
+import { useToast } from "../../context/ToastContext";
 import ShortsCard from "../../components/cards/ShortsCard";
 
 export default function Shorts() {
   const [shorts, setShorts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const showToast = useToast();
+  const FALLBACK_SHORTS = [
+    { _id: "f1", title: "Sample Short 1", thumbnail: "https://placehold.co/240x400?text=Short+1", views: 1200, channel: { name: "Demo" } },
+    { _id: "f2", title: "Sample Short 2", thumbnail: "https://placehold.co/240x400?text=Short+2", views: 980, channel: { name: "Demo" } },
+    { _id: "f3", title: "Sample Short 3", thumbnail: "https://placehold.co/240x400?text=Short+3", views: 2150, channel: { name: "Demo" } },
+    { _id: "f4", title: "Sample Short 4", thumbnail: "https://placehold.co/240x400?text=Short+4", views: 640, channel: { name: "Demo" } },
+    { _id: "f5", title: "Sample Short 5", thumbnail: "https://placehold.co/240x400?text=Short+5", views: 320, channel: { name: "Demo" } },
+    { _id: "f6", title: "Sample Short 6", thumbnail: "https://placehold.co/240x400?text=Short+6", views: 1520, channel: { name: "Demo" } },
+  ];
 
   useEffect(() => {
+    const controller = new AbortController();
     let isMounted = true;
 
     const loadShorts = async () => {
       try {
         setError(null);
-        const data = await fetchShorts();
+        const data = await fetchShorts({ signal: controller.signal });
         if (isMounted) {
           setShorts(Array.isArray(data) ? data : []);
         }
@@ -21,6 +32,8 @@ export default function Shorts() {
         console.error("Failed to load shorts:", err);
         if (isMounted) {
           setError(err.message || "Failed to load shorts. Please try again.");
+          setShorts(FALLBACK_SHORTS);
+          showToast("Shorts fetch failed, showing samples", "warning");
         }
       } finally {
         if (isMounted) setLoading(false);
@@ -31,6 +44,7 @@ export default function Shorts() {
 
     return () => {
       isMounted = false;
+      controller.abort();
     };
   }, []);
 

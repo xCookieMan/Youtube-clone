@@ -14,20 +14,25 @@ const REQUIRED_ENV = [
 ];
 
 const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
+const isProd = process.env.NODE_ENV === "production";
 
-if (missing.length) {
+if (missing.length && isProd) {
   throw new Error(
     `❌ Missing Cloudinary environment variables: ${missing.join(", ")}`
   );
 }
 
 /* ================= CONFIG ================= */
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true, // always use HTTPS
-});
+if (!missing.length) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+  });
+} else {
+  console.warn("⚠️ Skipping Cloudinary configuration in development (missing keys)");
+}
 
 /* ================= HEALTH CHECK ================= */
 export const cloudinaryHealthCheck = async () => {

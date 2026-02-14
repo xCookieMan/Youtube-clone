@@ -1,33 +1,36 @@
 import mongoose from "mongoose";
 
-// Enable strict query mode to avoid deprecation warnings
 mongoose.set("strictQuery", true);
 
-/**
- * Connects to MongoDB using the MONGO_URI from environment variables.
- * Exits the process on connection failure in production.
- */
 const connectDB = async () => {
   const uri = process.env.MONGO_URI;
+  const isProd = process.env.NODE_ENV === "production";
 
   if (!uri) {
     console.error("❌ MONGO_URI is not defined in environment variables.");
-    process.exit(1);
+    if (isProd) {
+      process.exit(1);
+    } else {
+      console.warn("⚠️ Skipping MongoDB connection in development (no MONGO_URI)");
+      return;
+    }
   }
 
   try {
-    // ✅ Mongoose v7+ no longer supports useNewUrlParser / useUnifiedTopology
     await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 5000, // 5-second timeout
+      serverSelectionTimeoutMS: 5000,
     });
     console.log("🟢 MongoDB connected successfully");
   } catch (err) {
     console.error("🔴 MongoDB connection failed:", err.message);
-    process.exit(1);
+    if (isProd) {
+      process.exit(1);
+    } else {
+      console.warn("⚠️ Continuing without DB in development");
+    }
   }
 };
 
-/* ================= CONNECTION EVENTS ================= */
 mongoose.connection.on("disconnected", () => {
   console.warn("⚠️ MongoDB disconnected");
 });

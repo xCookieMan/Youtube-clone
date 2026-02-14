@@ -83,7 +83,9 @@ export const request = async (url, options = {}) => {
     try {
       const err = await res.json();
       message = err.message || err.error || message;
-    } catch {}
+    } catch (e) {
+      message = String(message);
+    }
     throw new Error(message);
   }
 
@@ -105,7 +107,7 @@ export const searchVideos = (query, limit = 10, options = {}) => {
 /* ================= VIDEOS ================= */
 export const fetchVideos = () => request("/videos");
 export const fetchVideoById = (id) => request(`/videos/${id}`);
-export const fetchShorts = () => request("/videos/shorts");
+export const fetchShorts = (options = {}) => request("/videos/shorts", { method: "GET", ...options });
 export const fetchShortById = (id) => request(`/videos/${id}`);
 
 /* ================= USER CONTENT ================= */

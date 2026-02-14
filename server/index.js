@@ -73,7 +73,7 @@ app.use(
           "https://res.cloudinary.com",
           "https://api.cloudinary.com",
           ...(process.env.NODE_ENV === "development"
-            ? ["http://localhost:5000"]
+            ? [`http://localhost:${PORT}`, "http://localhost:5000"]
             : []),
           FRONTEND_URL,
         ],
