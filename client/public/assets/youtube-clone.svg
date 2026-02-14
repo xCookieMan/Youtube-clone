@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 150" height="30" preserveAspectRatio="xMidYMid meet">
+  <g>
+    <path fill="#FF0000" d="M549.655 124.083c-6.281 23.65-24.787 42.276-48.284 48.593C458.626 184 288 184 288 184s-170.626 0-213.371-11.324c-23.497-6.317-42.003-24.943-48.284-48.593C15 97.626 15 42 15 42s0-55.626 11.345-82.083c6.281-23.65 24.787-42.276 48.284-48.593C117.374-100 288-100 288-100s170.626 0 213.371 11.324c23.497 6.317 42.003 24.943 48.284 48.593C561 13.626 561 42 561 42s0 55.626-11.345 82.083zM232 96l152-54-152-54v108z" transform="translate(0, 100) scale(0.25)"/>
+  </g>
+  <g transform="translate(45, 0)">
+    <text x="0" y="22" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="24" fill="#212121" letter-spacing="-0.5">YouTube</text>
+  </g>
+</svg>
